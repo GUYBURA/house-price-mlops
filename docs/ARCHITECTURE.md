@@ -11,6 +11,7 @@
 
 ├───docs (Contains document of this project)
 ├───notebook (for tesing and data visualize on local)
+├───models (saved .joblib files)
 └───src (contains source code)
 
 # Data
