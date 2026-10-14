@@ -1,9 +1,10 @@
 import numpy as np
+from sklearn.compose import ColumnTransformer, TransformedTargetRegressor, make_column_selector
 from sklearn.impute import SimpleImputer
 from sklearn.linear_model import Ridge
-from sklearn.preprocessing import OneHotEncoder, StandardScaler
 from sklearn.pipeline import Pipeline
-from sklearn.compose import ColumnTransformer, make_column_selector, TransformedTargetRegressor
+from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
 
 def build_preprocessor():
     numerical_pipeline = Pipeline([

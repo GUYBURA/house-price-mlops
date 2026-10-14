@@ -1,17 +1,19 @@
-import joblib
-import logging
 import json
-import sklearn
+import logging
+from datetime import UTC, datetime
+
+import joblib
 import pandas as pd
-from datetime import datetime, timezone
+import sklearn
+from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 from sklearn.linear_model import Ridge
-from src.config import RANDOM_STATE, TEST_SIZE, MODEL_DIR, MODEL_PATH, METRICS_PATH
-from src.data import load_data, clean_data, remove_outliers
+from sklearn.model_selection import KFold, cross_val_score, train_test_split
+
+from src.config import METRICS_PATH, MODEL_DIR, MODEL_PATH, RANDOM_STATE, TEST_SIZE
+from src.data import clean_data, load_data, remove_outliers
+from src.evaluate import evaluate
 from src.features import add_features, split_target
 from src.pipeline import build_pipeline
-from src.evaluate import evaluate
-from sklearn.model_selection import train_test_split, cross_val_score, KFold
-from sklearn.ensemble import HistGradientBoostingRegressor, RandomForestRegressor
 
 logger = logging.getLogger(__name__)
 
@@ -42,12 +44,12 @@ def main():
                              scoring="neg_root_mean_squared_error")
         cv_results[name] = -scores.mean()
         logger.info(f"{name}: {-scores.mean():,.0f} +/- {scores.std():,.0f}")
-        
+
     chosen = "ridge"
     estimator = candidates[chosen]
-    
+
     model = build_pipeline(estimator).fit(X_train, y_train)
-    
+
     metrics = evaluate(y_test, model.predict(X_test))
     logger.info(
         "Test: MAE %.0f, RMSE %.0f, R2 %.3f, rmse_log %.3f",
@@ -57,7 +59,7 @@ def main():
     joblib.dump(model, MODEL_PATH)
     logger.info("Saved model to %s", MODEL_PATH)
     report = {
-        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "trained_at": datetime.now(UTC).isoformat(),
         "model": chosen,
         "params": estimator.get_params(),
         "data": {"rows_train": len(X_train), "rows_test": len(X_test)},
@@ -68,8 +70,8 @@ def main():
     with open(METRICS_PATH, "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
     logger.info("Saved metrics to %s", METRICS_PATH)
-    
-    
+
+
 if  __name__  ==  "__main__":
     logging.basicConfig(
         level=logging.INFO,

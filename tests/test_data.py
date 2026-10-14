@@ -24,7 +24,7 @@ def test_clean_data_marks_absent_features_as_none_string(raw):
 def test_clean_data_converts_codes_to_strings(raw):
     cleaned = clean_data(raw)
     for col in config.CATEGORICAL_AS_STR:
-        assert not cleaned[col].dtype.kind in "iuf", f"{col} still numeric"
+        assert cleaned[col].dtype.kind not in "iuf", f"{col} still numeric"
 
 
 def test_clean_data_does_not_modify_input(raw):

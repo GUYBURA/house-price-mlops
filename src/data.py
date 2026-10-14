@@ -1,5 +1,7 @@
-from src import config
 import pandas as pd
+
+from src import config
+
 
 def load_data(path= config.DATA_PATH) -> pd.DataFrame:
     df = pd.read_csv(path)

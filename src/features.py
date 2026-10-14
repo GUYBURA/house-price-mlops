@@ -1,5 +1,7 @@
-from src import config
 import pandas as pd
+
+from src import config
+
 
 def add_features(df: pd.DataFrame) -> pd.DataFrame:
     df = df.copy()

@@ -1,7 +1,9 @@
 import joblib
+
 from src.config import MODEL_PATH, TARGET
 from src.data import clean_data, load_data
 from src.features import add_features
+
 
 def predict(df):
     model = joblib.load(MODEL_PATH)

@@ -1,7 +1,7 @@
 import pandas as pd
 import pytest
 
-from src.data import load_data, clean_data, remove_outliers
+from src.data import clean_data, load_data, remove_outliers
 from src.features import add_features, split_target
 
 

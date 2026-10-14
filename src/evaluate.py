@@ -1,5 +1,6 @@
 import numpy as np
-from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error, root_mean_squared_log_error
+from sklearn.metrics import mean_absolute_error, r2_score, root_mean_squared_error
+
 
 def evaluate(y_true, y_pred) -> dict:
     return {

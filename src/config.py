@@ -20,7 +20,7 @@ NONE_FILL_COLS = ["Pool QC", "Misc Feature", "Alley", "Fence", "Fireplace Qu", "
 ZERO_FILL_COLS = ["Total Bsmt SF", "BsmtFin SF 1", "BsmtFin SF 2", "Bsmt Unf SF",
             "Bsmt Full Bath", "Bsmt Half Bath", "Garage Area", "Garage Cars", "Mas Vnr Area"]
 
-DROP_COLS = ["Order", "PID", "Street", "Utilities", "Condition 2", "Roof Matl", "Heating", 
+DROP_COLS = ["Order", "PID", "Street", "Utilities", "Condition 2", "Roof Matl", "Heating",
             "Pool QC", "Misc Feature", "Alley", "Garage Area", "Garage Yr Blt", "TotRms AbvGrd"]
 
 QUAL_COLS = ["Exter Qual", "Kitchen Qual", "Bsmt Qual", "Heating QC", "Fireplace Qu", "Garage Qual"]
