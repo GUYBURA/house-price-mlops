@@ -5,6 +5,7 @@ ROOT = Path(__file__).resolve().parent.parent
 DATA_PATH = Path(os.environ.get("DATA_PATH", str(ROOT / "data" / "AmesHousing.csv")))
 MODEL_DIR = Path(os.environ.get("AIP_MODEL_DIR", str(ROOT / "models")).replace("gs://", "/gcs/"))
 MODEL_PATH = MODEL_DIR / "model.joblib"
+METRICS_PATH = MODEL_DIR / "metrics.json"
 
 TARGET = "SalePrice"
 RANDOM_STATE = 42

@@ -1,7 +1,11 @@
 import joblib
 import logging
+import json
+import sklearn
+import pandas as pd
+from datetime import datetime, timezone
 from sklearn.linear_model import Ridge
-from src.config import RANDOM_STATE, TEST_SIZE, MODEL_DIR, MODEL_PATH
+from src.config import RANDOM_STATE, TEST_SIZE, MODEL_DIR, MODEL_PATH, METRICS_PATH
 from src.data import load_data, clean_data, remove_outliers
 from src.features import add_features, split_target
 from src.pipeline import build_pipeline
@@ -27,6 +31,7 @@ def main():
     )
     logger.info("Train %d rows, test %d rows", len(X_train), len(X_test))
     cv = KFold(n_splits=5, shuffle=True, random_state=RANDOM_STATE)
+    cv_results = {}
     candidates = {
         "ridge": Ridge(alpha=10),
         "hgb": HistGradientBoostingRegressor(random_state=RANDOM_STATE),
@@ -35,19 +40,36 @@ def main():
     for name, estimator in candidates.items():
         scores = cross_val_score(build_pipeline(estimator), X_train, y_train, cv=cv,
                              scoring="neg_root_mean_squared_error")
+        cv_results[name] = -scores.mean()
         logger.info(f"{name}: {-scores.mean():,.0f} +/- {scores.std():,.0f}")
+        
+    chosen = "ridge"
+    estimator = candidates[chosen]
     
-    model = build_pipeline(candidates["ridge"]).fit(X_train, y_train)
+    model = build_pipeline(estimator).fit(X_train, y_train)
     
     metrics = evaluate(y_test, model.predict(X_test))
     logger.info(
         "Test: MAE %.0f, RMSE %.0f, R2 %.3f, rmse_log %.3f",
-        metrics["mae"], metrics["rmse (dollars)"], metrics["r2"], metrics["rmse_log"],
+        metrics["mae"], metrics["rmse_dollars"], metrics["r2"], metrics["rmse_log"],
     )
     MODEL_DIR.mkdir(parents=True, exist_ok=True)
     joblib.dump(model, MODEL_PATH)
     logger.info("Saved model to %s", MODEL_PATH)
-
+    report = {
+        "trained_at": datetime.now(timezone.utc).isoformat(),
+        "model": chosen,
+        "params": estimator.get_params(),
+        "data": {"rows_train": len(X_train), "rows_test": len(X_test)},
+        "cv_rmse": {name: round(float(score), 1) for name, score in cv_results.items()},
+        "test": {k: round(float(v), 4) for k, v in metrics.items()},
+        "versions": {"sklearn": sklearn.__version__, "pandas": pd.__version__},
+    }
+    with open(METRICS_PATH, "w", encoding="utf-8") as f:
+        json.dump(report, f, indent=2)
+    logger.info("Saved metrics to %s", METRICS_PATH)
+    
+    
 if  __name__  ==  "__main__":
     logging.basicConfig(
         level=logging.INFO,
