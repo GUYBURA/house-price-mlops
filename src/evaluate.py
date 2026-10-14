@@ -6,5 +6,5 @@ def evaluate(y_true, y_pred) -> dict:
         "mae": mean_absolute_error(y_true, y_pred),
         "r2": r2_score(y_true, y_pred),
         "rmse_log": root_mean_squared_error(np.log1p(y_true), np.log1p(y_pred)),
-        "rmse (dollars)": root_mean_squared_error(y_true, y_pred)
+        "rmse_dollars": root_mean_squared_error(y_true, y_pred)
     }

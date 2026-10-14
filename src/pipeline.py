@@ -17,7 +17,7 @@ def build_preprocessor():
     transformer = ColumnTransformer([
         ("numerical", numerical_pipeline, make_column_selector(dtype_include="number")),
         ("categorical", categorical_pipeline, make_column_selector(dtype_exclude="number"))
-    ])
+    ], sparse_threshold=0)
     return transformer
 
 
