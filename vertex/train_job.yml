@@ -1,0 +1,11 @@
+workerPoolSpecs:
+  - machineSpec:
+      machineType: e2-standard-4
+    replicaCount: 1
+    containerSpec:
+      imageUri: asia-southeast1-docker.pkg.dev/house-price-mlops-511608/house-price/train:8f2ba70
+      env:
+        - name: DATA_PATH
+          value: /gcs/ames_house_price_data/AmesHousing.csv
+baseOutputDirectory:
+  outputUriPrefix: gs://ames_house_price_data/runs/8f2ba7
