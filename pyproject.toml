@@ -13,13 +13,19 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "httpx>=0.28.1",
     "pytest>=9.1.1",
     "ruff>=0.17.0",
 ]
 notebook = ["jupyterlab>=4.6.4", "matplotlib>=3.11.2", "seaborn>=0.13.2"]
+serve = [
+    "fastapi>=0.143.2",
+    "google-cloud-storage>=3.17.1",
+    "uvicorn>=0.54.0",
+]
 
 [tool.uv]
-default-groups = ["dev", "notebook"]
+default-groups = ["dev", "notebook", "serve"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]

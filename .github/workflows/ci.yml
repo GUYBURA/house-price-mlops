@@ -15,7 +15,7 @@ jobs:
               with:
                 enable-cache: true
             
-            - name: Install depencies
+            - name: Install dependencies
               run: uv sync --locked
 
             - name: Lint
@@ -26,3 +26,6 @@ jobs:
 
             - name: Build Docker Image
               run: docker build -t house-price-train .
+
+            - name: Build serving image
+              run: docker build -f Dockerfile.serve -t house-price-serve .
