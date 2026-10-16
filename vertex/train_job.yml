@@ -8,4 +8,4 @@ workerPoolSpecs:
         - name: DATA_PATH
           value: /gcs/ames_house_price_data/AmesHousing.csv
 baseOutputDirectory:
-  outputUriPrefix: gs://ames_house_price_data/runs/8f2ba7
+  outputUriPrefix: gs://ames_house_price_data/runs/8f2ba70
