@@ -26,3 +26,19 @@ DROP_COLS = ["Order", "PID", "Street", "Utilities", "Condition 2", "Roof Matl", 
 QUAL_COLS = ["Exter Qual", "Kitchen Qual", "Bsmt Qual", "Heating QC", "Fireplace Qu", "Garage Qual"]
 
 BASELINE_FEATURES = ["Gr Liv Area", "Bedroom AbvGr", "total_bath", "2nd Flr SF"]
+
+# Data validation: catches broken data, not unusual data (that is monitoring's job),
+# so limits are physically plausible bounds, not this dataset's min/max.
+MIN_TRAIN_ROWS = 500
+VALID_QUAL_GRADES = {grade for grade in QUAL_MAP if grade != "None"}
+VALUE_RANGES = {
+    "Gr Liv Area": (100, 20_000),
+    "Lot Area": (100, 1_000_000),
+    "Overall Qual": (1, 10),
+}
+NON_ZERO_COLS = ["Gr Liv Area", "Lot Area"]
+# Every raw column the code reads; dict.fromkeys removes duplicates and keeps order
+REQUIRED_COLS = list(dict.fromkeys(
+    CATEGORICAL_AS_STR + NONE_FILL_COLS + ZERO_FILL_COLS + QUAL_COLS + list(VALUE_RANGES)
+    + ["Full Bath", "Half Bath", "Year Built", "Yr Sold"]
+))

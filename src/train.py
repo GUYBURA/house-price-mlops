@@ -14,12 +14,15 @@ from src.data import clean_data, load_data, remove_outliers
 from src.evaluate import evaluate
 from src.features import add_features, split_target
 from src.pipeline import build_pipeline
+from src.validate import validate
 
 logger = logging.getLogger(__name__)
 
 def main():
     data = load_data()
     logger.info("Loaded %d rows", len(data))
+    validate(data)  # before cleaning: cleaning would hide broken data
+    logger.info("Data validation passed")
     cleaned_data = clean_data(data)
     removed_outlier = remove_outliers(cleaned_data)
     features = add_features(removed_outlier)
