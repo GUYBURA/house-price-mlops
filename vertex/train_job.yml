@@ -7,5 +7,7 @@ workerPoolSpecs:
       env:
         - name: DATA_PATH
           value: /gcs/ames_house_price_data/AmesHousing.csv
+        - name: PRODUCTION_MODEL_DIR
+          value: /gcs/ames_house_price_data/production
 baseOutputDirectory:
   outputUriPrefix: gs://ames_house_price_data/runs/fd22cf3

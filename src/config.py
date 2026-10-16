@@ -7,6 +7,17 @@ MODEL_DIR = Path(os.environ.get("AIP_MODEL_DIR", str(ROOT / "models")).replace("
 MODEL_PATH = MODEL_DIR / "model.joblib"
 METRICS_PATH = MODEL_DIR / "metrics.json"
 
+# The approved model. A new model is copied here only if it passes the quality gate.
+PRODUCTION_DIR = Path(
+    os.environ.get("PRODUCTION_MODEL_DIR", str(ROOT / "models" / "production")).replace("gs://", "/gcs/")
+)
+PRODUCTION_MODEL_PATH = PRODUCTION_DIR / "model.joblib"
+PRODUCTION_METRICS_PATH = PRODUCTION_DIR / "metrics.json"
+
+# Quality gate
+MAX_RMSE_LOG = 0.13     # absolute bar: never promote a model worse than this
+GATE_TOLERANCE = 0.01   # new model may be up to 1% worse than production (test-score noise)
+
 TARGET = "SalePrice"
 RANDOM_STATE = 42
 TEST_SIZE = 0.2

@@ -1,13 +1,13 @@
 import joblib
 
-from src.config import MODEL_PATH, TARGET
+from src.config import PRODUCTION_MODEL_PATH, TARGET
 from src.data import clean_data, load_data
 from src.features import add_features
 from src.validate import validate
 
 
 def predict(df):
-    model = joblib.load(MODEL_PATH)
+    model = joblib.load(PRODUCTION_MODEL_PATH)
     validate(df, require_target=False)
     df = clean_data(df)
     df = add_features(df)

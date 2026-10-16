@@ -12,7 +12,7 @@ def saved_model(small_xy, tmp_path, monkeypatch):
     X, y = small_xy
     path = tmp_path / "model.joblib"
     joblib.dump(build_pipeline().fit(X, y), path)
-    monkeypatch.setattr(predict_module, "MODEL_PATH", path)
+    monkeypatch.setattr(predict_module, "PRODUCTION_MODEL_PATH", path)
     return path
 
 
